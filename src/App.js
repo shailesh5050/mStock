@@ -9,7 +9,7 @@ import WatchList from './Components/WatchList';
 import Companies from './Components/Companies';
 import PrivateRoute from './Components/PrivateRoute ';
 function App() {
-  const [loggedIn,setLoggedIn] = useState(true)
+  const [loggedIn,setLoggedIn] = useState(false)
   
   return (
     <div >
@@ -17,11 +17,11 @@ function App() {
         <Navbar  />
         <Routes>
         <Route path='/watchlist' element={<PrivateRoute loggedIn={loggedIn} />}>
-          <Route path="/watchlist" element={<WatchList loggedIn={loggedIn} />} />
+          <Route path="/watchlist" element={<WatchList loggedIn={loggedIn}  />} />
         </Route>
 
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/login"   element={<Login  />} />
+          <Route path="/login"   element={<Login setLoggedIn={setLoggedIn}   />} />
           <Route path="/compare" element={<Compare />} />
           
           <Route path="/companies"  element={<Companies loggedIn={loggedIn} />} />
