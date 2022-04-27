@@ -1,16 +1,22 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-const Navbar = ({ name }) => {
-  console.log();
+const Navbar = ({ loggedIn,setLoggedIn}) => {
+    const navigate = useNavigate();
+  const logOut = () => {
+    setLoggedIn(false);
+    navigate("/");
+    };
+
   return (
     <div>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-          <Link class="navbar-brand" to="/">
-            mStock App
+      <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div className="container-fluid">
+          <Link className="navbar-brand" to="/">
+            m-Stock App
           </Link>
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarColor01"
@@ -18,31 +24,31 @@ const Navbar = ({ name }) => {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon"></span>
           </button>
 
-          <div class="collapse navbar-collapse" id="navbarColor01">
-            <ul class="navbar-nav m-auto">
-              <li class="nav-item">
-                <Link class="nav-link" to="/companies">
+          <div className="collapse navbar-collapse" id="navbarColor01">
+            <ul className="navbar-nav m-auto">
+              <li className="nav-item">
+                <Link className="nav-link" to="/">
                   Companies
-                  <span class="visually-hidden">(current)</span>
+                  <span className="visually-hidden">(current)</span>
                 </Link>
               </li>
-              <li class="nav-item">
-                <Link class="nav-link" to="/watchlist">
+              <li className="nav-item">
+                <Link className="nav-link" to="/watchlist">
                   Watch List
                 </Link>
               </li>
-              <li class="nav-item">
-                <Link class="nav-link" to="compare">
+              <li className="nav-item">
+                <Link className="nav-link" to="compare">
                   Compare
                 </Link>
               </li>
-              <li class="nav-item">
-                <Link class="nav-link" to="/login">
+              <li className="nav-item">
+                {loggedIn ? <button className="btn btn-success btn-sm" onClick={logOut}>Logout</button> :<Link className="nav-link" to="/login">
                   Login
-                </Link>
+                </Link>}
               </li>
             </ul>
           </div>

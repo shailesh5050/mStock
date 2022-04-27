@@ -1,35 +1,41 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-const Login = ({setLoggedIn,loggedIn}) => {
+import { useNavigate } from "react-router-dom";
+const Login = ({ setLoggedIn, loggedIn, setUserId }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [valid, setValid] = useState(true);
+  const navigate = useNavigate();
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    
-    
+
     try {
-        const response = await fetch("http://localhost:52682/api/Auth", {
+      const response = await fetch("http://localhost:52682/api/Auth", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            Email:email,
-           Password: password,
-        })
-            
-        
-    });
-    const data = await response.json();
-    console.log(data);
-    console.log(email,password);
-    if (data.UserId) {
+          Email: email,
+          Password: password,
+        }),
+      });
+      const data = await response.json();
+
+      if (data.UserId) {
         setLoggedIn(true);
+        setValid(true);
         setEmail("");
         setPassword("");
-    }
+        navigate("/watchlist");
+        setUserId(data.UserId);
+      } else {
+        setLoggedIn(false);
+        setValid(false);
+      }
     } catch (error) {
-        console.log(error);
+      setLoggedIn(false);
     }
   };
   return (
@@ -42,36 +48,38 @@ const Login = ({setLoggedIn,loggedIn}) => {
                 <h2>Login</h2>
 
                 {/* ALert Message */}
-                <div class="alert alert-dismissible alert-danger">
-                  <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert"
-                  ></button>
-                  <p>Email/Password is wrong !</p>
-                </div>
-                <div class="form-group">
-                  <div class="form-floating mb-3">
+                {!valid && (
+                  <div className="alert alert-dismissible alert-danger">
+                    <button
+                      type="button"
+                      className="btn-close"
+                      data-bs-dismiss="alert"
+                    ></button>
+                    <p>Email/Password is wrong !</p>
+                  </div>
+                )}
+                <div className="form-group">
+                  <div className="form-floating mb-3">
                     <input
                       type="email"
-                      class="form-control"
+                      className="form-control"
                       id="floatingInput"
                       placeholder="name@example.com"
                       value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
-                    <label for="floatingInput">Email address</label>
+                    <label htmlFor="floatingInput">Email address</label>
                   </div>
-                  <div class="form-floating">
+                  <div className="form-floating">
                     <input
                       type="password"
-                      class="form-control"
+                      className="form-control"
                       id="floatingPassword"
                       placeholder="Password"
                       value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
-                    <label for="floatingPassword">Password</label>
+                    <label htmlFor="floatingPassword">Password</label>
                   </div>
                 </div>
 
